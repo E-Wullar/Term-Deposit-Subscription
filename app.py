@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
 import joblib
+import sys
+
+st.write("Python version:", sys.version)
+
 
 # Load model
 @st.cache_resource
