@@ -11,3 +11,4 @@ flask-cors
 flask-restful
 flask-sqlalchemy
 flask-migrate
+shap

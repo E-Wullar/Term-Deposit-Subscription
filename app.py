@@ -9,7 +9,10 @@ features = joblib.load("model/model_features.pkl")
 
 app = Flask(__name__)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/')
+def home():
+    return "Term Deposit Subscription Prediction API is live!"
+
 def predict():
     try:
         # Get JSON input
