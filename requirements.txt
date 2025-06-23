@@ -1,0 +1,13 @@
+flask
+scikit-learn
+xgboost
+joblib
+numpy
+gunicorn
+pandas
+scipy
+requests
+flask-cors
+flask-restful
+flask-sqlalchemy
+flask-migrate
