@@ -1,45 +1,21 @@
 from flask import Flask, request, jsonify
 import joblib
-import pandas as pd
-import xgboost as xgb
-
-# Load model and features
-model = joblib.load("model/term_deposit_model.pkl")
-features = joblib.load("model/model_features.pkl")
+import os
 
 app = Flask(__name__)
 
+# Dummy root route for health check
 @app.route('/')
-def home():
-    return "Term Deposit Subscription Prediction API is live!"
+def index():
+    return "Term Deposit Subscription API is live"
 
+# Prediction endpoint
+@app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        # Get JSON input
-        input_data = request.get_json()
-
-        # Convert to DataFrame
-        input_df = pd.DataFrame([input_data])
-
-        # Keep only trained model features
-        input_df = input_df[features]
-
-        # Ensure numeric input
-        input_df = input_df.apply(pd.to_numeric)
-
-        # Predict
-        prediction = model.predict(input_df)[0]
-        probability = model.predict_proba(input_df)[0][1]
-
-        return jsonify({
-    "prediction": str(prediction),
-    "probability": float(round(probability, 4))  
-})
-
-        
-
-    except Exception as e:
-        return jsonify({"error": str(e)})
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    data = request.get_json()
+    model = joblib.load('model/term_deposit.pkl')
+    features = joblib.load('model/model_features.pkl')
+    X = [data.get(f, 0) for f in features]
+    pred = model.predict([X])[0]
+    prob = model.predict_proba([X])[0][1]
+    return jsonify({'prediction': str(pred), 'probability': prob})
