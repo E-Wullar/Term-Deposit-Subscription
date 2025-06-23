@@ -1,34 +1,5 @@
-from flask import Flask, request, jsonify
-import joblib
-import os
+import streamlit as st
 
-app = Flask(__name__)
+st.title("Term Deposit Subscription Predictor")
 
-# Load model and feature list once at startup
-MODEL_PATH = 'model/term_deposit_model.pkl'
-FEATURES_PATH = 'model/model_features.pkl'
-
-model = joblib.load(MODEL_PATH)
-features = joblib.load(FEATURES_PATH)
-
-@app.route('/')
-def index():
-    return "Term Deposit Subscription API is live"
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        data = request.get_json()
-        X = [data.get(f, 0) for f in features]
-        pred = model.predict([X])[0]
-        prob = model.predict_proba([X])[0][1]
-        return jsonify({'prediction': int(pred), 'probability': round(prob, 4)})
-    except Exception as e:
-        return jsonify({'error': str(e)})
-
-
-import os
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Default to 10000
-    app.run(host="0.0.0.0", port=port)
+st.write("Hello! This is your deployed Streamlit app on Render.")
